@@ -32,7 +32,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: "http://localhost:5555/api/auth/github/callback",
+      callbackURL: "https://github-auth-server-ctzu.onrender.com/api/auth/github/callback",
     },
     function (accessToken, refreshToken, profile, done) {
       return done(null, profile);
