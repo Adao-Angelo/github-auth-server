@@ -11,7 +11,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     credentials: true,
   })
 );
@@ -32,7 +32,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: "https://github-auth-server-ctzu.onrender.com/api/auth/github/callback",
+      callbackURL: `${process.env.API_BASE_URL}/api/auth/github/callback`,
     },
     function (accessToken, refreshToken, profile, done) {
       return done(null, profile);
@@ -57,7 +57,7 @@ app.get(
   "/api/auth/github/callback",
   passport.authenticate("github", { failureRedirect: "/api/auth/error" }),
   (req, res) => {
-    res.redirect("http://localhost:5173/");
+    res.redirect(process.env.FRONTEND_URL);
   }
 );
 
@@ -81,7 +81,7 @@ app.get("/api/auth/logout", (req, res) => {
     if (err) {
       return res.status(500).send("Error on Logout.");
     }
-    res.redirect("http://localhost:5173");
+    res.redirect(process.env.FRONTEND_URL);
   });
 });
 
