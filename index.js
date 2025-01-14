@@ -1,26 +1,43 @@
+import SQLiteStore from "connect-sqlite3";
 import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
 import session from "express-session";
 import passport from "passport";
 import { Strategy as GitHubStrategy } from "passport-github2";
+import { initializeDatabase } from "./db.js";
 
 config();
 
 const app = express();
 
+(async () => {
+  await initializeDatabase();
+  console.log("Database initialized");
+})();
+
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.FRONTEND_URL || "*",
     credentials: true,
   })
 );
 
+const SQLiteSessionStore = SQLiteStore(session);
 app.use(
   session({
-    secret: process.env.AUTH_SECRET,
+    store: new SQLiteSessionStore({
+      db: "sessions.db",
+      dir: "./data",
+    }),
+    secret: process.env.AUTH_SECRET || "default-secret",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24, // 1 dia
+    },
   })
 );
 
@@ -73,12 +90,13 @@ app.get("/api/auth/user", (req, res) => {
   }
 });
 
-app.get("/api/auth/logout", (req, res) => {
+app.get("/api/auth/logout", (req, res, next) => {
   if (!req.isAuthenticated()) {
     return res.status(401).send("User not authenticated.");
   }
   req.logout((err) => {
     if (err) {
+      console.error("Error during logout:", err);
       return res.status(500).send("Error on Logout.");
     }
     res.redirect(process.env.FRONTEND_URL);
