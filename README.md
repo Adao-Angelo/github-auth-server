@@ -16,11 +16,12 @@ Welcome to **News Aggregation GitHub Auth**, a backend service that provides aut
 - **Session Management**: Sessions are securely managed using Express sessions.
 - **User Info**: After login, the user’s GitHub profile is accessible.
 - **Logout Functionality**: Users can log out, ending their session.
-
-### Upcoming Features
 - **Frontend Integration**: Provide API access to front-end applications for seamless user interaction.
 - **User Profile Management**: Extend authentication to allow profile management and settings.
 - **Error Handling**: Improve error handling with more user-friendly messages.
+
+
+### Upcoming Features
 
 ## 🛠️ Technologies Used
 
