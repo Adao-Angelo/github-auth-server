@@ -1,7 +1,13 @@
 
 # News Aggregation GitHub Auth
 
+
+<img src="./assets/cover.png">
+
 Welcome to **News Aggregation GitHub Auth**, a backend service that provides authentication using GitHub and integrates seamlessly with your front-end application for user login and session management. This service uses Passport.js and GitHub OAuth2 for secure authentication.
+
+
+
 
 ## 🚀 Features
 
